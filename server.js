@@ -68,6 +68,16 @@ app.post('/upload', async (req, res) => {
   }
 });
 
+// Endpoint para listar archivos en la carpeta documents
+app.get('/files', (req, res) => {
+  try {
+    const files = fs.readdirSync(DOCS_DIR);
+    res.json({ files });
+  } catch (err) {
+    res.status(500).json({ message: 'Error leyendo carpeta', error: err.message });
+  }
+});
+
 // Render healthcheck
 app.get('/', (req, res) => {
   res.send('Servidor funcionando correctamente ✅');
