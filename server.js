@@ -23,8 +23,13 @@ app.post('/upload', (req, res) => {
   const safeName = filename.replace(/[^a-z0-9_\-\.]/gi, '_');
   const filePath = path.join(DOCS_DIR, safeName);
 
-  fs.writeFileSync(filePath, content, 'utf8');
-  res.status(200).json({ message: `Archivo ${safeName} guardado.` });
+  try {
+    fs.writeFileSync(filePath, content, 'utf8');
+    res.status(200).json({ message: `Archivo ${safeName} guardado.` });
+  } catch (err) {
+    console.error('Error al guardar archivo:', err);
+    res.status(500).json({ message: 'Error al guardar archivo' });
+  }
 });
 
 // Render healthcheck
